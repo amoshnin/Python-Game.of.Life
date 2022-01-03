@@ -3,3 +3,7 @@ BACKGROUND = 199, 199, 199
 DEAD_COLOR = 0, 0, 0
 ALIVE_COLOR = 255, 255, 255
 FPS = 60
+
+SETTING = 'setting'
+RUNNING = 'running'
+PAUSED = 'paused'

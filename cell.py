@@ -16,6 +16,7 @@ class Cell:
         self.rect = self.image.get_rect()
         self.cell_coordinate = (self.grid_x * CELL_WIDTH, self.grid_y * CELL_HEIGHT)
         self.neighbours = []
+        self.alive_neighbours = 0
 
     def update(self):
         self.rect.topleft = self.cell_coordinate
@@ -52,3 +53,11 @@ class Cell:
                 self.neighbours.append(grid[neighbour[1]][neighbour[0]])
             except:
                 print(neighbour)
+
+    def live_neighbours(self):
+        count = 0
+        for neighbour in self.neighbours:
+            if neighbour.alive:
+                count += 1
+
+        self.alive_neighbours = count

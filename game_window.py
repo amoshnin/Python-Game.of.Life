@@ -1,4 +1,5 @@
 import pygame
+import copy
 from cell import Cell
 
 vec = pygame.math.Vector2
@@ -30,3 +31,27 @@ class GameWindow:
             for cell in row:
                 cell.draw()
         self.screen.blit(self.image, (self.pos.x, self.pos.y))
+
+    def reset_grid(self):
+        self.grid = [[Cell(self.image, column, row) for column in range(self.columns)] for row in range(self.rows)]
+
+    def evaluate(self):
+        new_grid = copy.copy(self.grid)
+
+        for row in self.grid:
+            for cell in row:
+                cell.live_neighbours()
+
+        for yIdx, row in enumerate(self.grid):
+            for xIdx, cell in enumerate(row):
+                if cell.alive:
+                    if cell.alive_neighbours == 2 or cell.alive_neighbours == 3:
+                        new_grid[yIdx][xIdx].alive = True
+                    if cell.alive_neighbours < 2 and cell.alive:
+                        new_grid[yIdx][xIdx].alive = False
+                    if cell.alive_neighbours > 3 and cell.alive:
+                        new_grid[yIdx][xIdx].alive = False
+                else:
+                    if cell.alive_neighbours == 3:
+                        new_grid[yIdx][xIdx].alive = True
+        self.grid = new_grid
