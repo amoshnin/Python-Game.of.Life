@@ -17,7 +17,7 @@
 
 import sys
 import pygame
-from constants import BOARD_SIZE, BACKGROUND, FPS
+from constants import BOARD_SIZE, BOARD_WIDTH, BOARD_HEIGHT, BACKGROUND, FPS
 from game_window import GameWindow
 
 
@@ -26,6 +26,11 @@ def get_events():
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            mouse_pos = pygame.mouse.get_pos()
+            if mouse_on_grid(mouse_pos): click_cell(mouse_pos)
+
+
 
 def update():
     game_window.update()
@@ -33,6 +38,21 @@ def update():
 def draw():
     window.fill(BACKGROUND)
     game_window.draw()
+
+def mouse_on_grid(position):
+    if position[0] > 100 and position[0] < BOARD_WIDTH - 100:
+        if position[1] > 180 and position[1] < BOARD_HEIGHT - 20:
+            return True
+    return False
+
+def click_cell(position):
+    grid_pos = [position[0] - 100, position[1] - 180]
+    grid_pos[0], grid_pos[1] = grid_pos[0] // 20, grid_pos[1] // 20
+
+    if game_window.grid[grid_pos[1]][grid_pos[0]].alive:
+        game_window.grid[grid_pos[1]][grid_pos[0]].alive = False
+    else:
+        game_window.grid[grid_pos[1]][grid_pos[0]].alive = True
 
 pygame.init()
 window = pygame.display.set_mode(BOARD_SIZE)

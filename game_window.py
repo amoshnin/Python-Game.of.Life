@@ -11,9 +11,12 @@ class GameWindow:
         self.image = pygame.Surface((self.width, self.height))
         self.rect = self.image.get_rect()
 
-        self.rows = 10
-        self.columns = 10
+        self.rows = 30
+        self.columns = 30
         self.grid = [[Cell(self.image, column, row) for column in range(self.columns)] for row in range(self.rows)]
+        for row in self.grid:
+            for cell in row:
+                cell.get_neighbours(self.grid)
 
     def update(self):
         self.rect.topleft = self.pos
